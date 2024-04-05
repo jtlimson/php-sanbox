@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  php-app:
+    build: .
+    image: php-development # Use the image you built for PHP and Xdebug
+    container_name: php
+    ports:
+      - "80:80"  # Map port 80 of the container to port 80 on the host
+    volumes:
+      - ./src/php:/var/www/html  # Mount the project source code
+    environment:
+      - XDEBUG_MODE=debug
+      - XDEBUG_CLIENT_HOST=host.docker.internal
+      - XDEBUG_CLIENT_PORT=9003
+      - XDEBUG_START_WITH_REQUEST=yes
+    depends_on:
+      - mysql  # Ensure MySQL is started before this service
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:5.7  # Use the official MySQL image from Docker Hub
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: myrootpassword@  # Set the root password
+      MYSQL_DATABASE: development  # Create a database on container startup
+      MYSQL_USER: user  # Create a user
+      MYSQL_PASSWORD: 1234567  # Set the user password
+    ports:
+      - "13306:3306"  # Map port 3306 of the container to port 3306 on the host
+    volumes:
+      - ./mysql-data:/var/lib/mysql  # Persist database data
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql-data: {}
