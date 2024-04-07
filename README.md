@@ -1,8 +1,11 @@
-# build image
+### build image
 `docker build -t php-development .`
 
-# start 
+### start 
 `docker-compose up -d`
 
-# stop 
+### stop 
 `docker-compose down`
+
+###
+`docker exec -ti php bash`
