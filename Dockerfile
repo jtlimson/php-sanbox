@@ -20,6 +20,16 @@ RUN echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.
     && echo "xdebug.client_port=9003" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
+# Install Composer
+# This is a sandbox. So need composer to install dependencies.
+# Install Composer without verifying the installer hash 
+# NOTE: This is not recommended for production environments due to security concerns:
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+    && php composer-setup.php \
+    && php -r "unlink('composer-setup.php');" \
+    && mv composer.phar /usr/local/bin/composer
+
+
 # Set the working directory in the container
 WORKDIR /var/www/html
 

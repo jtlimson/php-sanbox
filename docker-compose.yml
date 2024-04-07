@@ -8,7 +8,7 @@ services:
     ports:
       - "80:80"  # Map port 80 of the container to port 80 on the host
     volumes:
-      - ./src/php:/var/www/html  # Mount the project source code
+      - ./src/php/:/var/www/html  # Mount the project source code
     environment:
       - XDEBUG_MODE=debug
       - XDEBUG_CLIENT_HOST=host.docker.internal
@@ -30,7 +30,7 @@ services:
     ports:
       - "13306:3306"  # Map port 3306 of the container to port 3306 on the host
     volumes:
-      - ./mysql-data:/var/lib/mysql  # Persist database data
+      - ./mysql-data/:/var/lib/mysql  # Persist database data
     networks:
       - app-network
 
